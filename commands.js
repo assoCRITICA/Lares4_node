@@ -1,9 +1,22 @@
+const { Console } = require('console');
 const crc = require('./larescrc.js')
 function login(){
-
     let message =  baseCommand()
+    message['CMD']="LOGIN"
+    message['PAYLOAD_TYPE'] = "INSTALLER"
     message['PAYLOAD']['PIN']='123456';
-    return crc(message)
+    return(crc(message))
+}
+
+function read(){
+    let message = baseCommand()
+    message['CMD'] = "READ"
+    messsage['PAYLOAD_TYPE'] = "MULTI_TYPE"
+    message['PAYLOAD']['ID_READ'] = message['PAYLOAD']['ID_LOGIN']
+    message['PAYLOAD']['TYPES']= [
+        "ZONES",
+        "OUTPUTS",
+    ]
 }
 
 let commandStatus = {
@@ -20,9 +33,11 @@ function baseCommand(){
     command = {
         "SENDER":commandStatus['SENDER'],
         "RECEIVER": "",
-        "ID": (++commandStatus['ID']).toString,
+        "CMD":"",
+        "ID": (++commandStatus['ID']).toString(),
+        "PAYLOAD_TYPE":"",
+        "PAYLOAD":{},
         "TIMESTAMP":time,
-        "PAYLOAD": {}
     }
     if(commandStatus['ID_LOGIN'])
         command['PAYLOAD']["ID_LOGIN"] = commandStatus["ID_LOGIN"]
