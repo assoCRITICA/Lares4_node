@@ -1,28 +1,35 @@
-const { timeStamp } = require("console")
 const crc = require('./larescrc.js')
 function login(){
-    let data = {
-        "SENDER": "cgh4-R0j0",
+
+    let message =  baseCommand()
+    message['PAYLOAD']['PIN']='123456';
+    return crc(message)
+}
+
+let commandStatus = {
+    "SENDER": "laresnode",
+    "ID":0
+}
+
+function confirmLogin(idLogin){
+    commandStatus['ID_LOGIN'] = idLogin
+}
+
+function baseCommand(){
+    let time = Math.floor(Date.now()/1000).toString();
+    command = {
+        "SENDER":commandStatus['SENDER'],
         "RECEIVER": "",
-        "CMD": "LOGIN",
-        "ID": "1",
-        "PAYLOAD_TYPE": "INSTALLER",
-        "PAYLOAD": {
-            "PIN": ""
-            },
-        "TIMESTAMP": ""
-    };
-
-    data['PAYLOAD']['PIN']='123456';
-    data['TIMESTAMP'] = Math.floor(Date.now()/1000).toString();
-
-    let datastring = JSON.stringify(data);
-    datastring = datastring.substring(0,datastring.length-1);
-    datastring+= ",\"CRC_16\":";
-    datastring+= `"${crc(datastring)}"}}`;
-    return datastring;
+        "ID": (++commandStatus['ID']).toString,
+        "TIMESTAMP":time,
+        "PAYLOAD": {}
+    }
+    if(commandStatus['ID_LOGIN'])
+        command['PAYLOAD']["ID_LOGIN"] = commandStatus["ID_LOGIN"]
+    return command
 }
 
 module.exports = {
-    login: login
+    login,
+    confirmLogin
 }
