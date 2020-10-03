@@ -1,3 +1,3 @@
 # Lares4_node
 
-not working as of now because it requires copyrighted code by ksenia, open alternative to that code will hopefully be writetn soon
+This module aims to provide a simple to use API to control a lares4 mainboard via websocket, by emulating the behaviour of the web control panel
