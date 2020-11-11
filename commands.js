@@ -8,15 +8,26 @@ function login(){
     return(crc(message))
 }
 
+function setOutput(outputID, desStatus){
+    let message = baseCommand();
+    message['CMD'] = "CMD_USR";
+    message['PAYLOAD_TYPE'] = "CMD_SET_OUTPUT";
+    message['PAYLOAD']['OUTPUT'] = {
+        "ID" : outputID,//need to check id from read()
+        "STA" : desStatus ? "ON" : "OFF"
+    };
+    return crc(message)
+}
 function read(){
-    let message = baseCommand()
-    message['CMD'] = "READ"
-    messsage['PAYLOAD_TYPE'] = "MULTI_TYPE"
-    message['PAYLOAD']['ID_READ'] = message['PAYLOAD']['ID_LOGIN']
+    let message = baseCommand();
+    message['CMD'] = "READ";
+    message['PAYLOAD_TYPE'] = "MULTI_TYPES";
+    message['PAYLOAD']['ID_READ'] = message['PAYLOAD']['ID_LOGIN'];
     message['PAYLOAD']['TYPES']= [
         "ZONES",
         "OUTPUTS",
-    ]
+    ];
+    return(crc(message));
 }
 
 let commandStatus = {
@@ -36,7 +47,9 @@ function baseCommand(){
         "CMD":"",
         "ID": (++commandStatus['ID']).toString(),
         "PAYLOAD_TYPE":"",
-        "PAYLOAD":{},
+        "PAYLOAD":{
+            "PIN" : "123456" //the pin is only needed in specific cases, but putting it preemptively is easier and it works
+        },
         "TIMESTAMP":time,
     }
     if(commandStatus['ID_LOGIN'])
@@ -46,5 +59,7 @@ function baseCommand(){
 
 module.exports = {
     login,
-    confirmLogin
+    confirmLogin,
+    read,
+    setOutput
 }
