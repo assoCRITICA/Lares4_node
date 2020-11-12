@@ -45,7 +45,7 @@ function messageHandler(message){
 }
 
 function writeOutput(output, state){
-    ws.send(commands.writeOutput(getOutId(output),state))
+    ws.send(commands.setOutput(getOutId(output),state))
 }
 module.exports = {
     initWs,
