@@ -1,10 +1,13 @@
 const { Console } = require('console');
 const crc = require('./larescrc.js')
-function login(){
+let pin;
+
+function login(code){
     let message =  baseCommand()
-    message['CMD']="LOGIN"
-    message['PAYLOAD_TYPE'] = "INSTALLER"
-    message['PAYLOAD']['PIN']='123456';
+    message['CMD']="LOGIN";
+    message['PAYLOAD_TYPE'] = "INSTALLER";
+    message['PAYLOAD']['PIN']= code;
+    pin = code;
     return(crc(message))
 }
 
@@ -48,7 +51,7 @@ function baseCommand(){
         "ID": (++commandStatus['ID']).toString(),
         "PAYLOAD_TYPE":"",
         "PAYLOAD":{
-            "PIN" : "123456" //the pin is only needed in specific cases, but putting it preemptively is easier and it works
+            "PIN" : pin //the pin is only needed in specific cases, but putting it preemptively is easier and it works
         },
         "TIMESTAMP":time,
     }

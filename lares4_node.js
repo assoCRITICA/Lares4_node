@@ -5,7 +5,7 @@ let ws = null
 let outputs = {}
 let zones = {}
 function initWs(IP, pin){
-    ws = new wsock('wss://192.168.3.108/KseniaWsock', ['KS_WSOCK'], {
+    ws = new wsock('wss://'+IP+'/KseniaWsock', ['KS_WSOCK'], {
         rejectUnauthorized: false,
         perMessageDeflate: false,
     });
@@ -14,7 +14,7 @@ function initWs(IP, pin){
     });
     ws.on('open',() => {
         console.log("connected");
-        ws.send(commands.login());
+        ws.send(commands.login(pin));
     });
     ws.on('message',messageHandler);
 
