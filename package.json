@@ -1,6 +1,6 @@
 {
   "name": "@protoxide22/lares4_node",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "ws": "^7.3.1"
   },
