@@ -4,7 +4,7 @@ const commands = require('./commands.js')
 let ws = null
 let outputs = {}
 let zones = {}
-function initWs(){
+function initWs(IP, pin){
     ws = new wsock('wss://192.168.3.108/KseniaWsock', ['KS_WSOCK'], {
         rejectUnauthorized: false,
         perMessageDeflate: false,
@@ -41,8 +41,13 @@ function messageHandler(message){
     {
         outputs = msg["PAYLOAD"]["OUTPUTS"]
         zones = msg["PAYLOAD"]["ZONES"]
-        getOutId("uscita virtuale")
     }
 }
 
-initWs();
+function writeOutput(output, state){
+    ws.send(commands.writeOutput(getOutId(output),state))
+}
+module.exports = {
+    initWs,
+    writeOutput
+}
