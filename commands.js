@@ -29,7 +29,17 @@ function read(){
     message['PAYLOAD']['TYPES']= [
         "ZONES",
         "OUTPUTS",
+        "BUS_HAS"
     ];
+    return(crc(message));
+}
+
+
+function realtime(){
+    let message = baseCommand();
+    message['CMD'] = "REALTIME"
+    message['PAYLOAD_TYPE'] = "REGISTER"
+    message['PAYLOAD']['ZONES'] = ["STATUS_ZONES","STATUS_OUTPUTS", "STATUS_BUS_HA_SENSOR"]
     return(crc(message));
 }
 
@@ -60,9 +70,11 @@ function baseCommand(){
     return command
 }
 
+
 module.exports = {
     login,
     confirmLogin,
     read,
-    setOutput
+    setOutput,
+    realtime
 }

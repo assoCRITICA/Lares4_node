@@ -4,6 +4,7 @@ const commands = require('./commands.js')
 let ws = null
 let outputs = {}
 let zones = {}
+let HAS = {}
 function initWs(IP, pin){
     ws = new wsock('wss://'+IP+'/KseniaWsock', ['KS_WSOCK'], {
         rejectUnauthorized: false,
@@ -22,7 +23,7 @@ function initWs(IP, pin){
 
 function getOutId(output){
     for(const element of outputs){
-        if(element['DES'] === output)
+        if(element['DES'].toLowerCase === output)
         return element['ID']
     }
     
@@ -41,6 +42,7 @@ function messageHandler(message){
     {
         outputs = msg["PAYLOAD"]["OUTPUTS"]
         zones = msg["PAYLOAD"]["ZONES"]
+        HAS = msg["PAYLOAD"]["BUS_HAS"]
     }
 }
 
